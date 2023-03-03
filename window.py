@@ -1,3 +1,9 @@
+'''
+开源软件，使用GPLv3协议
+请遵守开源规则！！！
+窗口组件+按钮函数文件
+'''
+
 import tkinter as tk
 import webbrowser
 import function as func
@@ -9,10 +15,8 @@ from PIL import Image,ImageTk
 #下标键盘是否存在
 keyboardopen=None
 
-#彩蛋
-EasterEgg=0
-
-#窗口文字部件变量
+inputarea_input=''
+ShiLiang_output=''
 
 #tkinter窗口部分
 class window():
@@ -24,8 +28,8 @@ class window():
         win.title("化学式计算工具")
         #win和Linux不同的全屏指令
         try:
-            width=800
-            height=650
+            width=888
+            height=200
             screenwidth = win.winfo_screenwidth()
             screenheight = win.winfo_screenheight()
             geometry = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
@@ -38,7 +42,7 @@ class window():
             screenheight = win.winfo_screenheight()
             geometry = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
             win.geometry(geometry)
-        win.minsize(530,650)
+        win.minsize(540,200)
         try:
             win.iconbitmap(True,'./icon.ico')
         except:
@@ -63,7 +67,7 @@ class window():
         #主窗口组件制作
             #缩放调整
                 #行
-        win.rowconfigure(1,weight=2)
+        win.rowconfigure(1,weight=1)
         win.rowconfigure(2,weight=0)
 
         
@@ -71,12 +75,13 @@ class window():
         win.columnconfigure(1,weight=0)
         win.columnconfigure(2,weight=3)
         win.columnconfigure(3,weight=0)
+        win.columnconfigure(4,weight=0)
 
-        
+        global inputarea_input,ShiLiang_output
             #制作输入区
         inputarea=tk.Label(win,text='输入区',font=('./font.ttf',22))
         inputarea.grid(row=1,column=1,padx=5,pady=5,sticky='NWSE')
-        inputarea_input=tk.Text(win,font=('./font.ttf',45),height=2)
+        inputarea_input=tk.Text(win,font=('./font.ttf',55),height=2)
         inputarea_input.grid(row=1,column=2,padx=5,pady=5,sticky='NWSE')
         inputarea_scr=tk.Scrollbar(win,command=inputarea_input.yview)
         inputarea_input.config(yscrollcommand=inputarea_scr.set)
@@ -86,38 +91,40 @@ class window():
                 #式量
         ShiLiang=tk.Label(win,text='式量',font=('./font.ttf',22))
         ShiLiang.grid(row=2,column=1,rowspan=2,padx=5,pady=5,sticky='NWSE')
-        ShiLiang_output=tk.Entry(win,font=('./font.ttf',15))
+        ShiLiang_output=tk.Entry(win,font=('./font.ttf',30))
         ShiLiang_output.grid(row=2,column=2,padx=5,pady=5,sticky='NWSE')
-        # ShiLiang_output_scr=tk.Scrollbar(win,command=ShiLiang_output.xview)
-        # ShiLiang_output_scr.config(xscrollcommand=ShiLiang_output_scr.set)
-        # ShiLiang_output_scr.grid(row=3,column=1,columnspan=2,padx=5,pady=(0,5),sticky='NWSE')
-        ShiLiang_get=tk.Button(win,text='⇚',font=('./font.ttf',15),command=lambda:func.function.ShiLiangCalc(input=inputarea_input,output=ShiLiang_output))
+        ShiLiang_get=tk.Button(win,text='⇚',font=('./font.ttf',20),height=3,command=lambda:func.function.ShiLiangCalc(input=inputarea_input,output=ShiLiang_output))
         ShiLiang_get.grid(row=2,column=3,padx=5,pady=5,sticky='NWSE')
+                #ctrl+enter=计算
+                    #中转函数
+        def transferFunc(event):
+            func.function.ShiLiangCalc(input=inputarea_input,output=ShiLiang_output)
+        win.bind('<Control-KeyPress-Q>',transferFunc)
+        win.bind('<Control-KeyPress-q>',transferFunc)
                 
                 #四个功能按钮
         FuncBut=tk.Frame(win)
-        FuncBut.grid(row=6,column=5,columnspan=4,sticky='NWSE')
+        FuncBut.grid(row=1,column=4,columnspan=1,rowspan=2,sticky='NWSE')
                     #缩放设置（功能按钮）
                         #行
         FuncBut.rowconfigure(1,weight=1)
         FuncBut.rowconfigure(2,weight=1)
                         #列
         FuncBut.columnconfigure(1,weight=1)
-        FuncBut.columnconfigure(2,weight=1)
               
                     #下标键盘
         FuncBut1=tk.Button(FuncBut,text='下标键盘',font=('./font.ttf',22),command=lambda:window.keyboardmake(win))
         FuncBut1.grid(row=1,column=1,padx=5,pady=5,sticky='NWSE')
-                    #计算全部
-        FuncBut2=tk.Button(FuncBut,text='计算全部',font=('./font.ttf',22),command=func.function.menuCmd)
-        FuncBut2.grid(row=1,column=2,padx=5,pady=5,sticky='NWSE')
-                    #检查输入
-        FuncBut3=tk.Button(FuncBut,text='检查输入',font=('./font.ttf',22),command=func.function.menuCmd)
-        FuncBut3.grid(row=2,column=1,padx=5,pady=5,sticky='NWSE')
                     #清空全部
-        FuncBut4=tk.Button(FuncBut,text='清空全部',font=('./font.ttf',22),command=func.function.menuCmd)
-        FuncBut4.grid(row=2,column=2,padx=5,pady=5,sticky='NWSE')
-        
+        FuncBut4=tk.Button(FuncBut,text='清空全部',font=('./font.ttf',22),command=lambda:window.emptyAny(win))
+        FuncBut4.grid(row=2,column=1,padx=5,pady=5,sticky='NWSE')
+    
+    def emptyAny(win):
+        #清空全部的函数
+        global inputarea_input,ShiLiang_output
+        inputarea_input.delete("1.0", "end")
+        ShiLiang_output.delete("0", "end")
+    
         #子窗口-下标键盘
     def keyboardmake(win):
         global keyboardopen
@@ -134,23 +141,54 @@ class window():
             keyboardopen = True            
             keyboard.protocol('WM_DELETE_WINDOW',lambda:window.keyboardclose(keyboard))
             #制作组件
-            ButText1=['*','2','3']
+            ButText1=['1','2','3']
             ButText2=['4','5','6']
             ButText3=['7','8','9']
-            for row in range(1,4):
+            ButText4=['0',' ','*']
+            for row in range(1,5):
                 for col in range(1,4):
                     if row==1:
-                        window.keyboardinput(keyboard,row,col,ButText1[col-1])
+                        window.keyboardinput(win,keyboard,row,col,ButText1[col-1])
                     elif row==2:
-                        window.keyboardinput(keyboard,row,col,ButText2[col-1])
+                        window.keyboardinput(win,keyboard,row,col,ButText2[col-1])
                     elif row==3:
-                        window.keyboardinput(keyboard,row,col,ButText3[col-1])  
+                        window.keyboardinput(win,keyboard,row,col,ButText3[col-1])  
+                    elif row==4:
+                        window.keyboardinput(win,keyboard,row,col,ButText4[col-1]) 
         else:
             tkmsg.showwarning(title='提示',message='下标键盘已被打开\n请检查屏幕!')
-    def keyboardinput(keyboard,row,col,ButText):
+    def keyboardinput(win,keyboard,row,col,ButText):
         keyboardButName = locals()
         keyboardButName['keyboard_'+str(row)+'_'+str(col) ] = tk.Button(keyboard,text=ButText,font=('./font.ttf',15),height=4,width=8)
         keyboardButName['keyboard_'+str(row)+'_'+str(col) ].grid(row=row,column=col)
+        def transferFunc2():
+            nonlocal ButText,win
+            window.keyboardinsert(win,str(ButText))
+        keyboard.bind('<KeyPress-'+str(ButText)+'>',transferFunc2())
+    def keyboardinsert(win,key):
+        global inputarea_input
+        if key=='1':
+            inputarea_input.insert('INSERT','₁')
+        elif key=='2':
+            inputarea_input.insert('INSERT','₂')
+        elif key=='3':
+            inputarea_input.insert('INSERT','₃')
+        elif key=='4':
+            inputarea_input.insert('INSERT','₄')
+        elif key=='5':
+            inputarea_input.insert('INSERT','₅')
+        elif key=='6':
+            inputarea_input.insert('INSERT','₆')
+        elif key=='7':
+            inputarea_input.insert('INSERT','₇')
+        elif key=='8':
+            inputarea_input.insert('INSERT','₈')
+        elif key=='9':
+            inputarea_input.insert('INSERT','₉')
+        elif key=='0':
+            inputarea_input.insert('INSERT','₀')
+        elif key=='*':
+            inputarea_input.insert('INSERT','·')
     def keyboardclose(keyboard):
         global keyboardopen
         keyboardopen=None
@@ -194,34 +232,9 @@ class window():
                 webbrowser.open("https://github.com/html5syt/Chemical-formula-calculation-tool/tree/%E5%8F%82%E8%B5%9B%E7%89%88%E6%9C%AC", new=0)
             desp4.bind("<Button-1>",github)
         about.mainloop()#防止图片不显示
-    #子窗口-元素周期表查询
-    def qwertymake(win):
-        global qwertydopen
-        qwerty=tk.Toplevel(win)
-        qwerty.title('元素周期表查询工具')
-        qwerty.attributes('-topmost', True)
-        qwerty.resizable(False,False)
-        #原子序数
-        NoQwerty=tk.Label(qwerty,text='原子序数:',font=('./font.ttf',22))
-        NoQwerty.grid(row=1,column=1,padx=5,pady=5)
-        NoQwertyInput=tk.Entry(qwerty,width=3,font=('./font.ttf',22))
-        NoQwertyInput.grid(row=1,column=2,padx=5,pady=5)
-        #元素符号
-        NmQwerty=tk.Label(qwerty,text='元素符号:',font=('./font.ttf',22))
-        NmQwerty.grid(row=2,column=1,padx=5,pady=5)
-        NmQwertyInput=tk.Entry(qwerty,width=3,font=('./font.ttf',22))
-        NmQwertyInput.grid(row=2,column=2,padx=5,pady=5)
-        #相对原子质量
-        MsQwerty=tk.Label(qwerty,text='相对原子质量:',font=('./font.ttf',22))
-        MsQwerty.grid(row=3,column=1,padx=5,pady=5)
-        MsQwertyInput=tk.Entry(qwerty,width=3,font=('./font.ttf',22))
-        MsQwertyInput.grid(row=3,column=2,padx=5,pady=5)
-        #获取
-        QwertyGet=tk.Button(qwerty,text='获取',font=('./font.ttf',22))
-        QwertyGet.grid(row=4,column=1,columnspan=3,padx=5,pady=5,sticky='NWSE')
 
     #子窗口-帮助
     def HelpMake(win):
         Help=tk.Toplevel(win)
         Help.resizable(False,False)
-     
+

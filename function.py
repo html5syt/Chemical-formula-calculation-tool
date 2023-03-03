@@ -1,3 +1,10 @@
+'''
+开源软件，使用GPLv3协议
+请遵守开源规则！！！
+计算函数文件
+'''
+
+
 import tkinter as tk
 import window as wd
 import PTOElist as Plst
@@ -161,164 +168,6 @@ class function():
                 tkmsg.showerror('错误','计算错误\n请检查化学式是否输入正确!')
             Arithmetic=[]    
             numbersss=False
-
-    def ZhiLiangFSCalc(input,output):
-        #质量分数计算
-        global numberbracket,numberlocation,lastelement,numberbracketcross,numberbracketEM,numbersss,numbernegativeone
-        numbersss=False
-            #获取
-        intext=input.get('1.0','end').replace('\n','').replace('\r','')
-        if not intext :
-            tkmsg.showerror('错误','请先输入化学式！')
-            return
-            #切割
-        cut=function.Cut(intext)
-            #核心：计算
-                #制作算式
-        Arithmetic=[]
-        elementlst={}
-        numberbracketEMs=[]
-        #质量分数元素名列表
-        elementNamelst=[]
-        subscriptnumberdic={'₀':'0',
-                            '₁':'1',
-                            '₂':'2',
-                            '₃':'3',
-                            '₄':'4',
-                            '₅':'5',
-                            '₆':'6',
-                            '₇':'7',
-                            '₈':'8',
-                            '₉':'9'}
-        output.delete('0.0','end')
-        for BigGroup in range(0,len(cut)):
-            numberbracket=False  #数字的括号标识
-            subscriptnumber=[]
-            def subscriptnumberadd():
-                nonlocal subscriptnumber
-                global numberlocation,numbersss
-                Arithmetic.append('*'+function.list_to_str(subscriptnumber))
-                try:
-                    elementlst[str(Plst.PTOE2.get(lastelement))]+=str('+'+function.list_to_str(subscriptnumber))
-                except:
-                    elementlst[str(Plst.PTOE2.get(lastelement))]=str('+'+function.list_to_str(subscriptnumber))
-                subscriptnumber=[]
-                numberlocation=False
-                numbersss=False
-            Arithmetic.append('(')
-            numberlocation=True
-            for SmallGroup in range(0,len(cut[BigGroup])):
-                # SmallGroup+=1
-                if str(cut[BigGroup][SmallGroup]).isalpha()==True:
-                    if subscriptnumber!=[]:
-                        subscriptnumberadd()
-                    try:
-                        elementlst[str(Plst.PTOE2.get(cut[BigGroup][SmallGroup]))]+=str('+'+'1')
-                    
-                    except:
-                        elementlst[str(Plst.PTOE2.get(cut[BigGroup][SmallGroup]))]=str('+'+'1')
-                        elementNamelst.append(cut[BigGroup][SmallGroup])
-                        numbernegativeone=True
-                    lastelement=str(cut[BigGroup][SmallGroup])
-                    if numberbracketcross:
-                        numberbracketEMs.append(str(cut[BigGroup][SmallGroup]))
-                    Arithmetic.append('+'+str(Plst.PTOE2.get(str(function.list_to_str(cut[BigGroup][SmallGroup])))))
-                    numberlocation=False
-                    numbersss=False
-                elif str(cut[BigGroup][SmallGroup]).isdigit()==True:
-                    try:
-                        number=int(str(cut[BigGroup][SmallGroup]))
-                    except:
-                        subscriptnumber.append(str(subscriptnumberdic.get(str(cut[BigGroup][SmallGroup]))))
-                    else:
-                        if numberlocation:
-                            if numbersss==False:
-                                Arithmetic.append(str(number)+'*'+'(')
-                                numberbracket=True
-                                numberbracketcross=True
-                                numberbracketEM=str(number)
-                                numbersss=True
-                                numbernegativeone
-                            else:
-                                tkmsg.showerror('抱歉','(T_T)饶了我吧\n开发者没力气修Bug啦\n(T_T)')
-                                return
-                        else:
-                            tkmsg.showerror('错误','数字必须在最前面！\n具体请查看帮助')
-                            return
-                elif str(cut[BigGroup][SmallGroup])=='·':
-                    if subscriptnumber!=[]:
-                        subscriptnumberadd()
-                    try:
-                        for elemet in range(0,len(numberbracketEMs)):
-                            elementlst[str(Plst.PTOE2.get(str(numberbracketEMs[elemet])))]+=str('+'+numberbracketEM)
-                    except:
-                        for elemet in range(0,len(numberbracketEMs)):
-                            elementlst[str(Plst.PTOE2.get(str(numberbracketEMs[elemet])))]=str('+'+numberbracketEM)
-                    if numberbracket==True:
-                        Arithmetic.append(')')
-                    Arithmetic.append(')*(')
-                    numberbracket=False
-                    numberlocation=True
-                    numbersss=False
-                elif str(cut[BigGroup][SmallGroup])=='(':
-                    if subscriptnumber!=[]:
-                        subscriptnumberadd()
-                    Arithmetic.append('+(')
-                    numberlocation=False
-                    numbersss=False
-                elif str(cut[BigGroup][SmallGroup])==')':
-                    if subscriptnumber!=[]:
-                        subscriptnumberadd()
-                    Arithmetic.append(')')
-                    numberlocation=False
-                    numbersss=False
-                #Arithmetic.append('||')
-            if subscriptnumber!=[]:
-                subscriptnumberadd()
-            try:
-                for elemet in range(0,len(numberbracketEMs)):
-                    if numbernegativeone:
-                        elementlst[str(Plst.PTOE2.get(str(numberbracketEMs[elemet])))]+=str('+'+numberbracketEM+'-1')
-                        numbernegativeone=False
-                    else:
-                        elementlst[str(Plst.PTOE2.get(str(numberbracketEMs[elemet])))]+=str('+'+numberbracketEM)
-            except:
-                for elemet in range(0,len(numberbracketEMs)):
-                    if numbernegativeone:
-                        elementlst[str(Plst.PTOE2.get(str(numberbracketEMs[elemet])))]=str('+'+numberbracketEM+'-1')
-                        numbernegativeone=False
-                    else:
-                        elementlst[str(Plst.PTOE2.get(str(numberbracketEMs[elemet])))]=str('+'+numberbracketEM)
-            if numberbracket==True:
-                Arithmetic.append(')')
-            Arithmetic.append(')')
-            numberbracket=False
-            print('-------c')
-            print(elementlst)
-            print(elementNamelst)
-            # try:
-            if '(),' in str(eval(function.list_to_str(Arithmetic)))+',':
-                raise TypeError
-            elementtemp=list(elementlst.items())
-            for i in range(0,len(elementtemp)):
-                outresult=eval('('+str(elementtemp[i][0])+'*('+str(elementtemp[i][1])+'))/'+str(eval(function.list_to_str(Arithmetic))))
-                print(outresult)
-                print('('+str(elementtemp[i][0])+'*('+str(elementtemp[i][1])+'))/'+str(eval(function.list_to_str(Arithmetic))))
-                print(str(eval(function.list_to_str(Arithmetic))))
-                outresulttemp = str(outresult * 100)[:5] + '%'
-                output.insert('end',str(str(elementNamelst[i])+':'+outresulttemp+','+'\n'))  
-            # except:
-            #     pass
-            #     #tkmsg.showerror('错误','计算错误\n请检查化学式是否输入正确!')
-            Arithmetic=[]
-            elementlst={}
-            elementNamelst=[]
-            numberbracketEM=''
-            numberbracketEMs=[]
-            numbernegativeone=False
-            numbersss=False
-                
-
 
 
     def menuCmd():
