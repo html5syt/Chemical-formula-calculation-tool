@@ -137,7 +137,7 @@ class function():
                         subscriptnumberadd()
                     if numberbracket==True:
                         Arithmetic.append(')')
-                    Arithmetic.append(')*(')
+                    Arithmetic.append(')+(')
                     numberbracket=False
                     numberlocation=True
                     numbersss=False

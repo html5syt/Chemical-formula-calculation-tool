@@ -144,7 +144,7 @@ class window():
             ButText1=['1','2','3']
             ButText2=['4','5','6']
             ButText3=['7','8','9']
-            ButText4=['0',' ','*']
+            ButText4=['0',' ','+']
             for row in range(1,5):
                 for col in range(1,4):
                     if row==1:
@@ -165,9 +165,10 @@ class window():
             nonlocal ButText,win
             window.keyboardinsert(win,str(ButText))
             print(repr(event.char))
-        # if str(ButText) == '*':
-        #     keyboard.bind('<KeyPress-'+str(ButText)+'>',transferFunc2)
-        keyboard.bind('<KeyPress-'+str(ButText)+'>',transferFunc2)
+        if str(ButText) == '+':
+            keyboard.bind('<KeyPress-Plus>',transferFunc2)
+        else:
+            keyboard.bind('<KeyPress-'+str(ButText)+'>',transferFunc2)
     def keyboardinsert(win,key):
         global inputarea_input
         if key=='1':
@@ -190,7 +191,7 @@ class window():
             inputarea_input.insert('insert','₉')
         elif key=='0':
             inputarea_input.insert('insert','₀')
-        elif key=='*':
+        elif key=='+':
             inputarea_input.insert('insert','·')
         else:
             print('123344')
