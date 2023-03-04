@@ -159,36 +159,41 @@ class window():
             tkmsg.showwarning(title='提示',message='下标键盘已被打开\n请检查屏幕!')
     def keyboardinput(win,keyboard,row,col,ButText):
         keyboardButName = locals()
-        keyboardButName['keyboard_'+str(row)+'_'+str(col) ] = tk.Button(keyboard,text=ButText,font=('./font.ttf',15),height=4,width=8)
+        keyboardButName['keyboard_'+str(row)+'_'+str(col) ] = tk.Button(keyboard,text=ButText,font=('./font.ttf',15),command=lambda:window.keyboardinsert(win,key=ButText),height=4,width=8)
         keyboardButName['keyboard_'+str(row)+'_'+str(col) ].grid(row=row,column=col)
-        def transferFunc2():
+        def transferFunc2(event):
             nonlocal ButText,win
             window.keyboardinsert(win,str(ButText))
-        keyboard.bind('<KeyPress-'+str(ButText)+'>',transferFunc2())
+            print(repr(event.char))
+        # if str(ButText) == '*':
+        #     keyboard.bind('<KeyPress-'+str(ButText)+'>',transferFunc2)
+        keyboard.bind('<KeyPress-'+str(ButText)+'>',transferFunc2)
     def keyboardinsert(win,key):
         global inputarea_input
         if key=='1':
-            inputarea_input.insert('INSERT','₁')
+            inputarea_input.insert('insert','₁')
         elif key=='2':
-            inputarea_input.insert('INSERT','₂')
+            inputarea_input.insert('insert','₂')
         elif key=='3':
-            inputarea_input.insert('INSERT','₃')
+            inputarea_input.insert('insert','₃')
         elif key=='4':
-            inputarea_input.insert('INSERT','₄')
+            inputarea_input.insert('insert','₄')
         elif key=='5':
-            inputarea_input.insert('INSERT','₅')
+            inputarea_input.insert('insert','₅')
         elif key=='6':
-            inputarea_input.insert('INSERT','₆')
+            inputarea_input.insert('insert','₆')
         elif key=='7':
-            inputarea_input.insert('INSERT','₇')
+            inputarea_input.insert('insert','₇')
         elif key=='8':
-            inputarea_input.insert('INSERT','₈')
+            inputarea_input.insert('insert','₈')
         elif key=='9':
-            inputarea_input.insert('INSERT','₉')
+            inputarea_input.insert('insert','₉')
         elif key=='0':
-            inputarea_input.insert('INSERT','₀')
+            inputarea_input.insert('insert','₀')
         elif key=='*':
-            inputarea_input.insert('INSERT','·')
+            inputarea_input.insert('insert','·')
+        else:
+            print('123344')
     def keyboardclose(keyboard):
         global keyboardopen
         keyboardopen=None
