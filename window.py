@@ -164,9 +164,8 @@ class window():
         def transferFunc2(event):
             nonlocal ButText,win
             window.keyboardinsert(win,str(ButText))
-            print(repr(event.char))
         if str(ButText) == '+':
-            keyboard.bind('<KeyPress-Plus>',transferFunc2)
+            keyboard.bind('<KeyPress-plus>',transferFunc2)
         else:
             keyboard.bind('<KeyPress-'+str(ButText)+'>',transferFunc2)
     def keyboardinsert(win,key):
@@ -191,10 +190,8 @@ class window():
             inputarea_input.insert('insert','₉')
         elif key=='0':
             inputarea_input.insert('insert','₀')
-        elif key=='+':
+        elif '+' in key:
             inputarea_input.insert('insert','·')
-        else:
-            print('123344')
     def keyboardclose(keyboard):
         global keyboardopen
         keyboardopen=None
