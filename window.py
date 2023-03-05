@@ -29,7 +29,7 @@ class window():
         #win和Linux不同的全屏指令
         try:
             width=888
-            height=200
+            height=400
             screenwidth = win.winfo_screenwidth()
             screenheight = win.winfo_screenheight()
             geometry = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
@@ -55,12 +55,24 @@ class window():
         #制作主窗口
             #制作菜单栏
         mainmenu=tk.Menu(win)
-                    #关于
+                #置顶
+        alwaystop=tk.Menu(mainmenu, tearoff=False)
+        topvar=tk.IntVar()
+        def topComp(win):
+            nonlocal topvar
+            if topvar.get()==1:
+                win.attributes('-topmost', True)
+            else:
+                win.attributes('-topmost', False)
+        alwaystop.add_checkbutton(label='置于顶层(T)',command=lambda:topComp(win),variable=topvar,onvalue=1,offvalue=0,underline=5)
+                #关于
         aboutmenu=tk.Menu(mainmenu, tearoff=False)
-        aboutmenu.add_command(label="关于(A)",command=lambda:window.aboutmake(win,False),underline=3)
+        aboutmenu.add_command(label="帮助(H)",command=func.function.menuCmd,underline=3)
         aboutmenu.add_separator()
+        aboutmenu.add_command(label="关于(A)",command=lambda:window.aboutmake(win,False),underline=3)
         aboutmenu.add_command(label="关于参赛版本(C)",command=lambda:window.aboutmake(win,True),underline=7)
-                #显示菜单
+            #显示菜单
+        mainmenu.add_cascade(label="置顶(T)",menu=alwaystop,underline=3)
         mainmenu.add_cascade(label="关于(A)",menu=aboutmenu,underline=3)
         win.config(menu=mainmenu)
 
@@ -160,7 +172,7 @@ class window():
             tkmsg.showwarning(title='提示',message='下标键盘已被打开\n请检查屏幕!')
     def keyboardinput(win,keyboard,row,col,ButText):
         keyboardButName = locals()
-        keyboardButName['keyboard_'+str(row)+'_'+str(col) ] = tk.Button(keyboard,text=ButText,font=('./font.ttf',15),command=lambda:window.keyboardinsert(win,key=ButText),height=4,width=8)
+        keyboardButName['keyboard_'+str(row)+'_'+str(col) ] = tk.Button(keyboard,text=ButText,font=('./font.ttf',18),command=lambda:window.keyboardinsert(win,key=ButText),height=4,width=8)
         keyboardButName['keyboard_'+str(row)+'_'+str(col) ].grid(row=row,column=col)
         def transferFunc2(event):
             nonlocal ButText,win
