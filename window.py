@@ -67,7 +67,7 @@ class window():
         alwaystop.add_checkbutton(label='置于顶层(T)',command=lambda:topComp(win),variable=topvar,onvalue=1,offvalue=0,underline=5)
                 #关于
         aboutmenu=tk.Menu(mainmenu, tearoff=False)
-        aboutmenu.add_command(label="帮助(H)",command=func.function.menuCmd,underline=3)
+        aboutmenu.add_command(label="帮助(H)",command=window.HelpMake,underline=3)
         aboutmenu.add_separator()
         aboutmenu.add_command(label="关于(A)",command=lambda:window.aboutmake(win,False),underline=3)
         aboutmenu.add_command(label="关于参赛版本(C)",command=lambda:window.aboutmake(win,True),underline=7)
@@ -252,5 +252,5 @@ class window():
     #子窗口-帮助
     def HelpMake():
         tkmsg.showinfo('提示','帮助在Github上\n请确保您能访问Github.com!')
-        webbrowser.open("https://github.com/html5syt/Chemical-formula-calculation-tool/tree/%E5%8F%82%E8%B5%9B%E7%89%88%E6%9C%AC", new=0)
+        webbrowser.open("https://github.com/html5syt/Chemical-formula-calculation-tool/wiki/%E5%8F%82%E8%B5%9B%E7%89%88%E3%81%AEHome", new=0)
 
