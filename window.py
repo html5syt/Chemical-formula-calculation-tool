@@ -250,7 +250,7 @@ class window():
         about.mainloop()#防止图片不显示
 
     #子窗口-帮助
-    def HelpMake(win):
-        Help=tk.Toplevel(win)
-        Help.resizable(False,False)
+    def HelpMake():
+        tkmsg.showinfo('提示','帮助在Github上\n请确保您能访问Github.com!')
+        webbrowser.open("https://github.com/html5syt/Chemical-formula-calculation-tool/tree/%E5%8F%82%E8%B5%9B%E7%89%88%E6%9C%AC", new=0)
 
