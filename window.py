@@ -35,9 +35,10 @@ class window():
             geometry = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
             win.geometry(geometry)
             win.state('zoomed')
-        except:                                                                                                
-            width = win.winfo_screenwidth()
-            height = win.winfo_screenheight()                                                                                                                                                                              
+        except:      
+            #Linux无需全屏                                                                                          
+            width = 888
+            height = 400                                                                                                                                                                             
             screenwidth = win.winfo_screenwidth()
             screenheight = win.winfo_screenheight()
             geometry = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
@@ -216,7 +217,7 @@ class window():
             about=tk.Toplevel(win)
             about.title('关于')
             width=300
-            height=300
+            height=380
             screenwidth = about.winfo_screenwidth()
             screenheight = about.winfo_screenheight()
             geometry = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
