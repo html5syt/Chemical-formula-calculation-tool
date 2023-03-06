@@ -6,7 +6,7 @@ block_cipher = None
 
 a = Analysis(
     ['main.py','PTOElist.py','window.py','function.py'],
-    pathex=['E:\\comp'],
+    pathex=['//root//Chemical-formula-calculation-tool//'],
     binaries=[],
     datas=[],
     hiddenimports=[],
@@ -41,5 +41,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='E:\\comp\\icon.ico'
+    icon='//root//Chemical-formula-calculation-tool//icon.ico'
 )
