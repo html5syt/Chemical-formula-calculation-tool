@@ -1,6 +1,7 @@
 # Chemical-formula-calculation-tool
 # 欢迎！
 
+### [转到Wiki](https://github.com/html5syt/Chemical-formula-calculation-tool/wiki/%E5%8F%82%E8%B5%9B%E7%89%88%E3%81%AEHome)
 # ***离线版帮助文件可在开始菜单/程序安装目录中查看。***
 
 ---
