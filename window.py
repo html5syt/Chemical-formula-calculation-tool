@@ -251,6 +251,6 @@ class window():
 
     #子窗口-帮助
     def HelpMake():
-        tkmsg.showinfo('提示','帮助在Github上\n请确保您能访问Github.com!')
+        tkmsg.showinfo('提示','帮助在Github上\n请确保您能访问Github.com!\n另有离线帮助文件，\n可在开始菜单中打开。')
         webbrowser.open("https://github.com/html5syt/Chemical-formula-calculation-tool/wiki/%E5%8F%82%E8%B5%9B%E7%89%88%E3%81%AEHome", new=0)
 
