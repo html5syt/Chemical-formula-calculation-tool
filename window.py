@@ -1,4 +1,11 @@
+'''
+开源软件，使用GPLv3协议
+请遵守开源规则！！！
+窗口组件+按钮函数
+'''
+
 import tkinter as tk
+import webbrowser
 import function as func
 import PTOElist as Plst
 import tkinter.ttk
@@ -8,6 +15,8 @@ from PIL import Image,ImageTk
 #下标键盘是否存在
 keyboardopen=None
 
+inputarea_input=''
+ShiLiang_output=''
 #彩蛋
 EasterEgg=0
 
@@ -49,8 +58,20 @@ class window():
         #制作主窗口
             #制作菜单栏
         mainmenu=tk.Menu(win)
+           
                     #工具
         toolsmenu=tk.Menu(mainmenu, tearoff=False)
+        #置顶
+       
+        topvar=tk.IntVar()
+        def topComp(win):
+            nonlocal topvar
+            if topvar.get()==1:
+                win.attributes('-topmost', True)
+            else:
+                win.attributes('-topmost', False)
+        toolsmenu.add_checkbutton(label='置于顶层(T)',command=lambda:topComp(win),variable=topvar,onvalue=1,offvalue=0,underline=5)
+        toolsmenu.add_separator()
         toolsmenu.add_command(label="导入(I)",command=func.function.menuCmd,underline=3)
         toolsmenu.add_command(label="导出(O)",command=func.function.menuCmd,underline=3)
         toolsmenu.add_separator()
@@ -59,7 +80,7 @@ class window():
         toolsmenu.add_command(label="退出(Q)",command=win.quit,underline=3)
                     #关于
         aboutmenu=tk.Menu(mainmenu, tearoff=False)
-        aboutmenu.add_command(label="帮助(H)",command=lambda:window.HelpMake(win),underline=3)
+        aboutmenu.add_command(label="帮助(H)",command=lambda:window.HelpMake,underline=3)
         aboutmenu.add_separator()
         aboutmenu.add_command(label="关于(A)",command=lambda:window.aboutmake(win),underline=3)
                 #显示菜单
@@ -96,6 +117,7 @@ class window():
         win.columnconfigure(7,weight=0)
         win.columnconfigure(8,weight=0)
         
+        global inputarea_input
             #制作输入区
         inputarea=tk.Label(win,text='输入区',font=('./font.ttf',22))
         inputarea.grid(row=1,column=1,padx=5,pady=5,sticky='NWSE')
@@ -177,6 +199,16 @@ class window():
         FuncBut4=tk.Button(FuncBut,text='清空全部',font=('./font.ttf',22),command=func.function.menuCmd)
         FuncBut4.grid(row=2,column=2,padx=5,pady=5,sticky='NWSE')
         
+        
+        #ctrl+qQ=计算所有
+                    #中转函数
+        def transferFunc(event):
+            func.function.ShiLiangCalc(input=inputarea_input,output=ShiLiang_output)
+            #。。。。。。
+        win.bind('<Control-KeyPress-Q>',transferFunc)
+        win.bind('<Control-KeyPress-q>',transferFunc)
+                
+
         #子窗口-下标键盘
     def keyboardmake(win):
         global keyboardopen
@@ -193,23 +225,57 @@ class window():
             keyboardopen = True            
             keyboard.protocol('WM_DELETE_WINDOW',lambda:window.keyboardclose(keyboard))
             #制作组件
-            ButText1=['*','2','3']
+            ButText1=['1','2','3']
             ButText2=['4','5','6']
             ButText3=['7','8','9']
-            for row in range(1,4):
+            ButText4=['0',' ','+']
+            for row in range(1,5):
                 for col in range(1,4):
                     if row==1:
-                        window.keyboardinput(keyboard,row,col,ButText1[col-1])
+                        window.keyboardinput(win,keyboard,row,col,ButText1[col-1])
                     elif row==2:
-                        window.keyboardinput(keyboard,row,col,ButText2[col-1])
+                        window.keyboardinput(win,keyboard,row,col,ButText2[col-1])
                     elif row==3:
-                        window.keyboardinput(keyboard,row,col,ButText3[col-1])  
+                        window.keyboardinput(win,keyboard,row,col,ButText3[col-1])  
+                    elif row==4:
+                        window.keyboardinput(win,keyboard,row,col,ButText4[col-1]) 
         else:
             tkmsg.showwarning(title='提示',message='下标键盘已被打开\n请检查屏幕!')
-    def keyboardinput(keyboard,row,col,ButText):
+    def keyboardinput(win,keyboard,row,col,ButText):
         keyboardButName = locals()
-        keyboardButName['keyboard_'+str(row)+'_'+str(col) ] = tk.Button(keyboard,text=ButText,font=('./font.ttf',15),height=4,width=8)
+        keyboardButName['keyboard_'+str(row)+'_'+str(col) ] = tk.Button(keyboard,text=ButText,font=('./font.ttf',18),command=lambda:window.keyboardinsert(win,key=ButText),height=4,width=8)
         keyboardButName['keyboard_'+str(row)+'_'+str(col) ].grid(row=row,column=col)
+        def transferFunc2(event):
+            nonlocal ButText,win
+            window.keyboardinsert(win,str(ButText))
+        if str(ButText) == '+':
+            keyboard.bind('<KeyPress-plus>',transferFunc2)
+        else:
+            keyboard.bind('<KeyPress-'+str(ButText)+'>',transferFunc2)
+    def keyboardinsert(win,key):
+        global inputarea_input
+        if key=='1':
+            inputarea_input.insert('insert','₁')
+        elif key=='2':
+            inputarea_input.insert('insert','₂')
+        elif key=='3':
+            inputarea_input.insert('insert','₃')
+        elif key=='4':
+            inputarea_input.insert('insert','₄')
+        elif key=='5':
+            inputarea_input.insert('insert','₅')
+        elif key=='6':
+            inputarea_input.insert('insert','₆')
+        elif key=='7':
+            inputarea_input.insert('insert','₇')
+        elif key=='8':
+            inputarea_input.insert('insert','₈')
+        elif key=='9':
+            inputarea_input.insert('insert','₉')
+        elif key=='0':
+            inputarea_input.insert('insert','₀')
+        elif '+' in key:
+            inputarea_input.insert('insert','·')
     def keyboardclose(keyboard):
         global keyboardopen
         keyboardopen=None
@@ -219,7 +285,7 @@ class window():
     def aboutmake(win):
         about=tk.Toplevel(win)
         about.title('关于')
-        width=380
+        width=300
         height=380
         screenwidth = about.winfo_screenwidth()
         screenheight = about.winfo_screenheight()
@@ -233,8 +299,13 @@ class window():
         desp1=tk.Label(about,text='Html5syt',font=('./font.ttf',30)).pack()
         desp2=tk.Label(about,text='制作',font=('./font.ttf',25)).pack()
         desp3=tk.Label(about,text='V 1.0',font=('./font.ttf',20)).pack()
-        desp4=tk.Label(about,text='GitHub链接',font=('./font.ttf',20)).pack()
+        desp4=tk.Label(about,text='GitHub链接',fg='blue',font=('./font.ttf',20,"underline"))
+        desp4.pack()
+        def github(event):
+            webbrowser.open("https://github.com/html5syt/Chemical-formula-calculation-tool", new=0)
+        desp4.bind("<Button-1>",github)
         about.mainloop()#防止图片不显示
+
     #子窗口-元素周期表查询
     def qwertymake(win):
         global qwertydopen
@@ -262,10 +333,11 @@ class window():
         QwertyGet.grid(row=4,column=1,columnspan=3,padx=5,pady=5,sticky='NWSE')
 
     #子窗口-帮助
-    def HelpMake(win):
-        Help=tk.Toplevel(win)
-        Help.resizable(False,False)
-     
+#子窗口-帮助
+    def HelpMake():
+        tkmsg.showinfo('提示','注意:这里是参赛版的帮助!\n帮助在Github上\n请确保您能访问Github.com!\n另有离线帮助文件，\n可在开始菜单中打开。')
+        webbrowser.open("https://github.com/html5syt/Chemical-formula-calculation-tool/wiki/%E5%8F%82%E8%B5%9B%E7%89%88%E3%81%AEHome", new=0)
+
      
     #彩蛋：窗口轰炸
     def EasterEggMake(event,win):

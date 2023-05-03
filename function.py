@@ -1,3 +1,10 @@
+'''
+开源软件，使用GPLv3协议
+请遵守开源规则！！！
+计算函数文件
+'''
+
+
 import tkinter as tk
 import window as wd
 import PTOElist as Plst
@@ -120,7 +127,7 @@ class function():
                                 numberbracket=True
                                 numbersss=True
                             else:
-                                tkmsg.showerror('抱歉','(T_T)饶了我吧\n开发者没力气修Bug啦\n(T_T)')
+                                tkmsg.showerror('抱歉','暂不支持多位数字\n具体请查看帮助')
                                 return
                         else:
                             tkmsg.showerror('错误','数字必须在最前面！\n具体请查看帮助')
@@ -130,7 +137,7 @@ class function():
                         subscriptnumberadd()
                     if numberbracket==True:
                         Arithmetic.append(')')
-                    Arithmetic.append(')*(')
+                    Arithmetic.append(')+(')
                     numberbracket=False
                     numberlocation=True
                     numbersss=False
